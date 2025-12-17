@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { fetchBookings, cancelBooking } from '@/lib/api';
 import Layout from '@/components/Layout';
+import { formatDateTime } from '@/lib/dateUtils';
 
 interface Booking {
   id: string;
@@ -56,17 +57,6 @@ export default function BookingsPage() {
     }
   }
 
-  function formatDateTime(dateTimeString: string) {
-    if (!dateTimeString) return 'N/A';
-    const date = new Date(dateTimeString);
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  }
 
   return (
     <Layout>

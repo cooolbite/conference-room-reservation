@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { fetchRooms, checkAvailability, fetchAvailableRooms } from '@/lib/api';
 import Layout from '@/components/Layout';
+import DateTimePicker from '@/components/DateTimePicker';
 
 export default function AvailabilityPage() {
   const [formData, setFormData] = useState({
@@ -89,10 +90,10 @@ export default function AvailabilityPage() {
     <Layout>
       <div className="max-w-2xl">
         <div className="mb-12">
-          <h1 className="text-4xl lg:text-5xl font-medium tracking-tight mb-3">
+          <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-3 text-gray-900">
             Check Availability
           </h1>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-700">
             Check room availability for your desired time slot
           </p>
         </div>
@@ -104,10 +105,10 @@ export default function AvailabilityPage() {
               setCheckResult(null);
               setAvailableRooms([]);
             }}
-            className={`px-6 py-3 text-sm font-medium transition-colors ${
+            className={`px-6 py-3 text-sm font-semibold transition-colors rounded-lg ${
               mode === 'room'
                 ? 'bg-black text-white'
-                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
             }`}
           >
             Check Single Room
@@ -118,10 +119,10 @@ export default function AvailabilityPage() {
               setCheckResult(null);
               setAvailableRooms([]);
             }}
-            className={`px-6 py-3 text-sm font-medium transition-colors ${
+            className={`px-6 py-3 text-sm font-semibold transition-colors rounded-lg ${
               mode === 'all'
                 ? 'bg-black text-white'
-                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
             }`}
           >
             Check All Rooms
@@ -131,57 +132,58 @@ export default function AvailabilityPage() {
         {mode === 'room' ? (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Select Room *
               </label>
-              <select
-                name="roomId"
-                value={formData.roomId}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors"
-              >
-                <option value="">-- Select a room --</option>
-                {rooms.map(room => (
-                  <option key={room.id} value={room.id}>
-                    {room.name} (Capacity: {room.capacity} {room.capacity === 1 ? 'person' : 'people'})
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  name="roomId"
+                  value={formData.roomId}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 pr-10 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:border-gray-600 transition-colors appearance-none"
+                >
+                  <option value="" className="bg-gray-800">-- Select a room --</option>
+                  {rooms.map(room => (
+                    <option key={room.id} value={room.id} className="bg-gray-800">
+                      {room.name} (Capacity: {room.capacity} {room.capacity === 1 ? 'person' : 'people'})
+                    </option>
+                  ))}
+                </select>
+                <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Start Date & Time *
               </label>
-              <input
-                type="datetime-local"
+              <DateTimePicker
                 name="startTime"
                 value={formData.startTime}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
                 End Date & Time *
               </label>
-              <input
-                type="datetime-local"
+              <DateTimePicker
                 name="endTime"
                 value={formData.endTime}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors"
               />
             </div>
 
             <button
               onClick={handleCheckRoomAvailability}
               disabled={loading || !formData.roomId || !formData.startTime || !formData.endTime}
-              className="px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-gray-200 text-gray-900 text-sm font-semibold hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
             >
               {loading ? 'Checking...' : 'Check Availability'}
             </button>
@@ -202,37 +204,33 @@ export default function AvailabilityPage() {
         ) : (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Start Date & Time *
               </label>
-              <input
-                type="datetime-local"
+              <DateTimePicker
                 name="startTime"
                 value={formData.startTime}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
                 End Date & Time *
               </label>
-              <input
-                type="datetime-local"
+              <DateTimePicker
                 name="endTime"
                 value={formData.endTime}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors"
               />
             </div>
 
             <button
               onClick={handleCheckAllRooms}
               disabled={loading || !formData.startTime || !formData.endTime}
-              className="px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-gray-200 text-gray-900 text-sm font-semibold hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
             >
               {loading ? 'Checking...' : 'Check All Rooms'}
             </button>

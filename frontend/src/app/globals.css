@@ -34,3 +34,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Force 24-hour format for datetime-local inputs */
+input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* Ensure 24-hour time format and 30-minute intervals */
+input[type="datetime-local"] {
+  /* Force 24-hour format */
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+/* Style for time picker to show 24-hour format */
+input[type="datetime-local"]::-webkit-datetime-edit-hour-field:focus,
+input[type="datetime-local"]::-webkit-datetime-edit-minute-field:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+

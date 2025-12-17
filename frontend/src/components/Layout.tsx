@@ -52,6 +52,14 @@ export default function Layout({ children }: LayoutProps) {
               >
                 My Bookings
               </Link>
+              <Link 
+                href="/daily"
+                className={`text-sm font-semibold transition-colors ${
+                  pathname === '/daily' ? 'text-gray-900 border-b-2 border-gray-900 pb-1' : 'text-gray-700 hover:text-gray-900'
+                }`}
+              >
+                Daily View
+              </Link>
             </div>
           </nav>
         </div>
